@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import sys
+from math import isqrt
+
+
+def check_23(num):
+    x, y = 2, 3
+    if num % x == 0:
+        return (num // x, x)
+    elif num % y == 0:
+        return (num // y, y)
+    return None
+
+
+def check_prime(num):
+    limit = isqrt(num) + 1
+    for i in range(5, limit, 6):
+        if num % i == 0:
+            return (num // i, i)
+        elif num % (i + 2) == 0:
+            return (num // (i + 2), i + 2)
+    return (num, 1)
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                num = int(line.strip())
+                factor = check_23(num)
+                if factor is not None:
+                    print(f"{num}={factor[0]}*{factor[1]}")
+                else:
+                    factor = check_prime(num)
+                    print(f"{num}={factor[0]}*{factor[1]}")
+
+    except FileNotFoundError:
+        print("File not found:", file_path)
+
+
+if __name__ == "__main__":
+    main()
+
